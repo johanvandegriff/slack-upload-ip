@@ -1,13 +1,11 @@
 #!/bin/bash
 
 PARENT_DIR="$(cd "$(dirname "$0")"; pwd -P)"
-file="ip_a_inet.txt"
-webhookfile="webhook.txt"
+webhookfile="$PARENT_DIR/webhook.txt"
+file="$PARENT_DIR/ip_a_inet.txt"
 
 if [[ "$1" == --setup ]]; then
-  echo -n "Enter the slack webhook URL: "
-  read webhook
-  echo "$webhook" > "$PARENT_DIR/$webhookfile"
+  "$PARENT_DIR/setup-webhook.sh"
   CRON_JOB="*/5 * * * * $PARENT_DIR/`basename $0`"
   cron_temp_file=$(mktemp)
   crontab -l > "$cron_temp_file"
@@ -21,7 +19,6 @@ if [[ "$1" == --setup ]]; then
   exit 0
 fi
 
-cd "$PARENT_DIR"
 text=$(ip a)"
 `hostname`"
 inet=$(echo "$text" | grep inet)
