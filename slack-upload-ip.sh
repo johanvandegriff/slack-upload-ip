@@ -19,12 +19,11 @@ if [[ "$1" == --setup ]]; then
   exit 0
 fi
 
-text=$(ip a)"
+inet=$(ip a | grep inet)"
 `hostname`"
-inet=$(echo "$text" | grep inet)
 if [[ "$inet" != $(cat "$file") ]]; then
-    echo "$inet" > "$file"
-    curl -X POST -H 'Content-type: applicaion/json' --data '{"text":"'"$inet"'"}' $(cat "$webhookfile")
+  echo "$inet" > "$file"
+  curl -X POST -H 'Content-type: applicaion/json' --data '{"text":"'"$inet"'"}' $(cat "$webhookfile")
 else
-    echo "No change in IP address since last check."
+  echo "No change in IP address since last check."
 fi
