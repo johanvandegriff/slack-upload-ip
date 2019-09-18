@@ -19,6 +19,6 @@ if [[ "$1" == --setup ]]; then
 fi
 
 sleep 10 #wait for it to connect to the wifi
-"$PARENT_DIR"/check.sh
+"$PARENT_DIR"/slack-upload-ip.sh
 "$PARENT_DIR"/message.sh "`hostname` has booted up with IP: `hostname -I || hostname -i`
 on network: `iwgetid -r`"
