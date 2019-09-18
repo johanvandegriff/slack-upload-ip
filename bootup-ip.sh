@@ -7,8 +7,14 @@ if [[ "$1" == --setup ]]; then
     echo "This system does not have /etc/rc.local; find another way to run this script at bootup."
     exit 1
   fi
-  #add this script to /etc/rc.local to run on bootup
-  sudo sed -i -e '$i \'"\"$PARENT_DIR/`basename $0`\" &"'\n' /etc/rc.local
+  SCRIPT="\"$PARENT_DIR/`basename $0`\" &"
+  #check if this script is already in /etc/rc.local
+  if grep "^${SCRIPT}$" /etc/rc.local; then
+    echo "This script is already installed in /etc/rc.local"
+  else
+    #add this script to /etc/rc.local to run on bootup
+    sudo sed -i -e '$i \'"$SCRIPT"'\n' /etc/rc.local
+  fi
   exit 0
 fi
 
